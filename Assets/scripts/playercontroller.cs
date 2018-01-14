@@ -44,8 +44,10 @@ public class playercontroller : MonoBehaviour {
         moveVector.y = verticalVelocity;
         if (Input.GetKeyDown("space"))
         {
+            moveVector.y = jumpForce *Time.deltaTime;
+            
             controller.GetComponent<Animator>().SetTrigger("jump");
-            moveVector.y = jumpForce;
+            
         }
 
         //forward
