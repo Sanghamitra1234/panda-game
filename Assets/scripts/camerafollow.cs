@@ -21,9 +21,7 @@ public class camerafollow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         moveVector = lookat.position + startOffset;
-
         moveVector.x = 0;
-
         if (transition > 1.0f)
 
         {
