@@ -43,6 +43,8 @@ GameObject:
   - component: {fileID: 414598}
   - component: {fileID: 3314598}
   - component: {fileID: 2314598}
+  - component: {fileID: 65676878063774104}
+  - component: {fileID: 65500414465511212}
   m_Layer: 0
   m_Name: Fence
   m_TagString: Untagged
@@ -196,3 +198,27 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 114594}
   m_IsPrefabParent: 1
+--- !u!65 &65500414465511212
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114598}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.6811986, y: 34.540943, z: 279.2838}
+  m_Center: {x: -69.84777, y: 13.329858, z: 150.44302}
+--- !u!65 &65676878063774104
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114598}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.993055, y: 34.540943, z: 279.2838}
+  m_Center: {x: 69.01515, y: 13.329858, z: 150.44302}
