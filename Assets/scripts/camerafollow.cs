@@ -10,7 +10,7 @@ public class camerafollow : MonoBehaviour {
 
     private float transition = 0.0f;
     private float animationDuration = 2.0f;
-    private Vector3 animationOffset = new Vector3(0, 5, 5);
+    private Vector3 animationOffset = new Vector3(0, 3.75f, -2.67f);
 
 	// Use this for initialization
 	void Start () {

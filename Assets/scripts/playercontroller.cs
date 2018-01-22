@@ -9,18 +9,12 @@ public class playercontroller : MonoBehaviour
     [SerializeField]
     public float speed;
     public float horizontalspeed = 2.0f;
-    public float jumpForce = 4.0f;
+    public float jumpForce = 9.0f;
     float verticalVelocity = 0.0f;
     float gravity = 12.0f;
     private float animationDuration = 2.0f;
-    public float gyrospeed = 1.5f;
-
-    //swipe variables
-
-    public float minSwipeDistY;
-    public float minSwipeDistX;
     private Vector2 startPos;
-
+    private int direction = 0;
     // Use this for initialization
     void Start()
     {
@@ -31,100 +25,105 @@ public class playercontroller : MonoBehaviour
     void Update()
     {
         //for first 2 sec, till the camera comes down, none of the key ll work
-
         if (Time.time < animationDuration)
         {
-            controller.Move(Vector3.forward * speed * Time.deltaTime);
+            controller.Move(Vector3.forward*speed * Time.deltaTime);
             return;
         }
 
-        moveVector = Vector3.zero;
         if (controller.isGrounded)
         {
-            verticalVelocity = -0f;
+            verticalVelocity = 0f;
         }
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
         }
-        //x
-        moveVector.x = Input.GetAxisRaw("Horizontal") * horizontalspeed;
-        
-        #if UNITY_ANDROID
-           moveVector.x = Input.acceleration.x * gyrospeed;
-           Debug.Log("accelerator is working !!");
-        #endif
 
-        //y
+        moveVector = Vector3.zero;
+        
+        //y direction
         moveVector.y = verticalVelocity;
         if (Input.GetKeyDown("space"))
         {
-            moveVector.y = jumpForce * Time.deltaTime;
-            controller.GetComponent<Animator>().SetTrigger("jump");
+            moveVector.y = jumpForce;
+            controller.GetComponent<Animator>().Play("Jump");
         }
-
-        //forward
-        moveVector.z = speed;
-
-        controller.Move((moveVector * speed) * Time.deltaTime);
-
-        //#if UNITY_ANDROID
-        if (Input.touchCount > 0)
-
-        {
-          Touch touch = Input.touches[0];
-            switch (touch.phase)
-
+        // Right Turn
+        if (Input.GetKeyDown("h")) {
+            Vector3 NextDir;
+            if (direction == 0)
             {
-                case TouchPhase.Began:
-                  startPos = touch.position;
-                  break;
-
-                case TouchPhase.Ended :
-                case TouchPhase.Canceled:
-
-                    float swipeDistVertical = (new Vector3(0, touch.position.y, 0) - new Vector3(0, startPos.y, 0)).magnitude;
-
-                    if (swipeDistVertical > minSwipeDistY)
-
-                    {
-                        float swipeValue = Mathf.Sign(touch.position.y - startPos.y);
-                        if (swipeValue > 0)
-
-                        {
-                            Debug.Log("up");
-                            moveVector.y = jumpForce * Time.deltaTime;
-                            controller.GetComponent<Animator>().SetTrigger("jump");
-                        }
-                        else if (swipeValue < 0)
-                        {
-                            //Slide();
-                        }
-                    }
-
-                    float swipeDistHorizontal = (new Vector3(touch.position.x, 0, 0) - new Vector3(startPos.x, 0, 0)).magnitude;
-
-                    if (swipeDistHorizontal > minSwipeDistX)
-
-                    {
-                        float swipeValue = Mathf.Sign(touch.position.x - startPos.x);
-                        if (swipeValue > 0)
-                        {
-                             //turn and rotate right
-                           // transform.Rotate(0, (swipeValue * 300 ), 0);
-                           // moveVector.x = speed;
-                           // controller.Move((moveVector * speed) * Time.deltaTime);
-                            Debug.Log("right");
-                        }
-                        else if (swipeValue < 0)
-                        {   //turn and rotate left
-                           // transform.Rotate(0,swipeValue, 0);
-                            Debug.Log("left");
-                        }
-                    }
-                break;
+                NextDir = new Vector3(1, 0, 0);
+                direction = 2;
             }
+            else if (direction == 1)
+            {
+                NextDir = new Vector3(-1, 0, 0);
+                direction = 3;
+            }
+            else if (direction == 2)
+            {
+                NextDir = new Vector3(0, 0, -1);
+                direction = 1;
+            }
+            else
+            {
+                NextDir = new Vector3(0, 0, 1);
+                direction = 0;
+            }
+            transform.rotation = Quaternion.LookRotation(NextDir);
         }
+        //Left Turn
+        if (Input.GetKeyDown("g"))
+        {
+            Vector3 NextDir;
+            if (direction == 0)
+            {
+                NextDir = new Vector3(-1, 0, 0);
+                direction = 3;
+            }
+            else if (direction == 1)
+            {
+                NextDir = new Vector3(1, 0, 0);
+                direction = 2;
+            }
+            else if (direction == 2)
+            {
+                NextDir = new Vector3(0, 0, 1);
+                direction = 0;
+            }
+            else
+            {
+                NextDir = new Vector3(0, 0, -1);
+                direction = 1;
+            }
+            transform.rotation = Quaternion.LookRotation(NextDir);
+        }
+        // X and Z direction
+
+        if (direction == 0) {
+            // For Z moving
+            moveVector.z = speed * speed;
+            moveVector.x = Input.GetAxisRaw("Horizontal") * horizontalspeed;
+        }
+        else if (direction == 1) {
+            // For -Z moving
+            moveVector.z = (-1)*speed * speed;
+            moveVector.x = (-1)*Input.GetAxisRaw("Horizontal") * horizontalspeed;
+        }
+        else if (direction == 2) {
+            // For X moving
+            moveVector.x = speed * speed;
+            moveVector.z = (-1)*Input.GetAxisRaw("Horizontal") * horizontalspeed;
+        }
+        else {
+            // For -X moving
+            moveVector.x = (-1)*speed * speed;
+            moveVector.z = Input.GetAxisRaw("Horizontal") * horizontalspeed;
+        }
+
+        controller.Move(moveVector * Time.deltaTime);
     }
 
 }
