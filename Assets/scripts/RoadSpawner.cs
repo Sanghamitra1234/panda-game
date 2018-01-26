@@ -12,7 +12,7 @@ public class RoadSpawner : MonoBehaviour {
 
 
     void Start () {
-        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+       playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         newRoadPos = playerPos.position;
         StartSpawningRoad();
         fixOffset = newRoadPos.z - playerPos.position.z;
@@ -45,7 +45,7 @@ public class RoadSpawner : MonoBehaviour {
     void SpawnGround1() {
         GameObject ground = Instantiate(ground1, newRoadPos, Quaternion.identity);
         newRoadPos.z = newRoadPos.z + 7.55f;
-    }
+  }
     void SpawnBridgeLarge() {
         GameObject bridge = Instantiate(bridgeLarge, newRoadPos, Quaternion.identity);
         newRoadPos.z = newRoadPos.z + 7.55f;
